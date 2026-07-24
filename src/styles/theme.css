@@ -1069,7 +1069,8 @@ button:focus:not(:focus-visible) { outline: none; }
 }
 
 .is-rolling .dice-3d-cube {
-  animation: dice-roll-spin 0.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transition: none !important;
+  animation: dice-roll-spin 0.3s linear infinite !important;
 }
 
 .dice-face {

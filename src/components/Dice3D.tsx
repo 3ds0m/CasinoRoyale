@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface Dice3DProps {
   value: number | null;
@@ -8,7 +8,7 @@ interface Dice3DProps {
 // Rotation angles to display each face of the 3D cube facing front
 const FACE_ROTATIONS: Record<number, string> = {
   1: 'rotateX(0deg) rotateY(0deg) rotateZ(0deg)',
-  2: 'rotateX(0deg) rotateY(-90deg) rotateZ(0deg)', // Left/Right depends on map, standard: 2 is Left
+  2: 'rotateX(0deg) rotateY(-90deg) rotateZ(0deg)',
   3: 'rotateX(90deg) rotateY(0deg) rotateZ(0deg)',
   4: 'rotateX(-90deg) rotateY(0deg) rotateZ(0deg)',
   5: 'rotateX(0deg) rotateY(90deg) rotateZ(0deg)',
@@ -16,16 +16,27 @@ const FACE_ROTATIONS: Record<number, string> = {
 };
 
 export const Dice3D: React.FC<Dice3DProps> = ({ value, rolling }) => {
-  // Determine style rotation
-  const rotationStyle = value ? FACE_ROTATIONS[value] : 'rotateX(45deg) rotateY(45deg) rotateZ(0deg)';
+  const [displayValue, setDisplayValue] = useState<number>(value || 1);
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setInterval>;
+    if (rolling) {
+      timer = setInterval(() => {
+        setDisplayValue(Math.floor(Math.random() * 6) + 1);
+      }, 70);
+    } else if (value !== null) {
+      setDisplayValue(value);
+    }
+    return () => clearInterval(timer);
+  }, [rolling, value]);
+
+  const rotationStyle = FACE_ROTATIONS[displayValue] || 'rotateX(0deg) rotateY(0deg)';
 
   return (
     <div className={`dice-3d-wrap ${rolling ? 'is-rolling' : ''}`}>
       <div 
         className="dice-3d-cube"
-        style={{
-          transform: rolling ? undefined : rotationStyle
-        }}
+        style={rolling ? undefined : { transform: rotationStyle }}
       >
         {/* Face 1: Front */}
         <div className="dice-face face-front">
