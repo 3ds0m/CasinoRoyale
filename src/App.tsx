@@ -97,7 +97,7 @@ function App() {
       }
     } catch (err: any) {
       console.error("Error creating Stripe session:", err);
-      alert(`Error al generar el pago de Stripe: ${err.message}`);
+      alert("Pagos con Stripe disponibles en un futuro.");
     }
   };
 
