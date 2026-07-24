@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useCasinoWarEngine } from '../hooks/useCasinoWarEngine';
 import { Card3D } from './Card3D';
+import { HowToPlayGuide } from './HowToPlayGuide';
 
 interface CasinoWarGameProps {
   onBackToLobby: () => void;
@@ -130,6 +131,18 @@ export const CasinoWarGame: React.FC<CasinoWarGameProps> = ({ onBackToLobby }) =
             </div>
           )}
         </div>
+
+        {/* Guía de Juego */}
+        <HowToPlayGuide
+          title="Casino War"
+          steps={[
+            "Ingresa la cantidad de fichas a apostar y presiona Repartir.",
+            "Recibirás 1 carta al igual que el crupier. Gana la carta con mayor valor numérico (As es la más alta).",
+            "Si hay un Empate (Tie), puedes rendirte y recuperar el 50% de tu apuesta, o Ir a la Guerra duplicando tu apuesta.",
+            "Si vas a la guerra, se queman 3 cartas y se reparte 1 carta extra para cada uno para definir el ganador."
+          ]}
+          tips="Ir a la guerra cuando hay empate mantiene una de las ventajas de la casa más bajas del casino."
+        />
       </div>
     </div>
   );

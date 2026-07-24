@@ -2,6 +2,7 @@ import React from 'react';
 import { useBlackjackEngine, calculateBlackjackHandValue } from '../hooks/useBlackjackEngine';
 import { Card3D } from './Card3D';
 import { ShieldCheck } from 'lucide-react';
+import { HowToPlayGuide } from './HowToPlayGuide';
 
 interface BlackjackGameProps {
   onBackToLobby: () => void;
@@ -196,6 +197,18 @@ export const BlackjackGame: React.FC<BlackjackGameProps> = ({ onBackToLobby }) =
             </div>
           )}
         </div>
+
+        <HowToPlayGuide
+          title="Blackjack 21"
+          steps={[
+            "Elige tu apuesta inicial y presiona Repartir.",
+            "Tu objetivo es sumar 21 o acercarte lo más posible sin pasarte.",
+            "Usa Pedir (Hit) para recibir otra carta, o Plantarse (Stand) para terminar tu turno.",
+            "Si tus primeras 2 cartas suman 21, ¡tienes Blackjack y cobras 3:2!",
+            "Puedes Doblar (Double) duplicando tu apuesta a cambio de recibir exactamente 1 carta más."
+          ]}
+          tips="El crupier está obligado a pedir cartas hasta sumar 17 o más."
+        />
       </div>
     </div>
   );

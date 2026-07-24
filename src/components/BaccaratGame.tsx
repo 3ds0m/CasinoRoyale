@@ -2,6 +2,7 @@ import React from 'react';
 import { useBaccaratEngine } from '../hooks/useBaccaratEngine';
 import { Card3D } from './Card3D';
 import { Coins, RefreshCw } from 'lucide-react';
+import { HowToPlayGuide } from './HowToPlayGuide';
 
 interface BaccaratGameProps {
   onBackToLobby: () => void;
@@ -240,6 +241,17 @@ export const BaccaratGame: React.FC<BaccaratGameProps> = ({ onBackToLobby }) => 
             </button>
           </div>
         )}
+
+        <HowToPlayGuide
+          title="Baccarat"
+          steps={[
+            "Elige el valor de tus fichas y apuesta a la mano del Jugador (Player), de la Banca (Banker) o a Empate (Tie).",
+            "El objetivo en Baccarat es acercarse lo más posible a 9 puntos. (Las cartas 10, J, Q, K valen 0, los Ases valen 1).",
+            "Si la suma supera los 10 puntos, sólo se toma el último dígito (ej. 7 + 8 = 15 -> vale 5 puntos).",
+            "El juego decide automáticamente si el Jugador o la Banca deben robar una 3ª carta según el reglamento oficial."
+          ]}
+          tips="Apostar a la Banca (Banker) tiene una ligera ventaja estadística sobre la apuesta del Jugador."
+        />
       </div>
     </div>
   );

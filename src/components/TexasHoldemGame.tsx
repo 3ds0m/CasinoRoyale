@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTexasHoldemEngine } from '../hooks/useTexasHoldemEngine';
 import { Card3D } from './Card3D';
 import { Coins, UserCheck, ShieldAlert, Award } from 'lucide-react';
+import { HowToPlayGuide } from './HowToPlayGuide';
 
 interface TexasHoldemGameProps {
   onBackToLobby: () => void;
@@ -230,6 +231,18 @@ export const TexasHoldemGame: React.FC<TexasHoldemGameProps> = ({ onBackToLobby 
             </div>
           )}
         </div>
+
+        <HowToPlayGuide
+          title="Texas Hold'em Poker"
+          steps={[
+            "Ingresa tus fichas de entrada (Buy-In) y presiona Entrar a la Mesa.",
+            "Recibirás 2 cartas secretas (Hole Cards). La mesa colocará automáticamente las ciegas iniciales (Small y Big Blind).",
+            "Sigue la ronda de apuestas (Pre-Flop, Flop, Turn y River) decidiendo si Pasar (Check), Igualar (Call), Subir (Raise) o Retirarte (Fold).",
+            "Los 3 bots realizarán sus turnos automáticamente evaluando sus perfiles de juego (Conservador, Agresivo y Farolero).",
+            "Al llegar al Showdown, gana el jugador que logre la mejor combinación de 5 cartas usando sus 2 cartas propias y las 5 comunitarias del centro."
+          ]}
+          tips="Presta atención al estilo de cada bot: el Bot Farolero subirá con manos débiles mientras que el Bot Conservador sólo apostará fuerte con jugadas grandes."
+        />
       </div>
     </div>
   );

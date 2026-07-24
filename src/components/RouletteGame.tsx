@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouletteEngine, RED_NUMBERS, getNumberColor } from '../hooks/useRouletteEngine';
+import { HowToPlayGuide } from './HowToPlayGuide';
 import type { RouletteBet } from '../types/schema';
 
 // European roulette layout number sequence on the actual wheel
@@ -404,6 +405,17 @@ export const RouletteGame: React.FC<RouletteGameProps> = ({ onBackToLobby }) => 
             </div>
           </div>
         </div>
+
+        <HowToPlayGuide
+          title="Ruleta Europea"
+          steps={[
+            "Selecciona el valor de tus fichas (10, 50, 100, 500) y colócalas en el tapete.",
+            "Puedes hacer apuestas sencillas (Rojo/Negro, Par/Impar, 1-18/19-36), Docenas o números individuales (Pleno 35:1).",
+            "Presiona Girar para lanzar la bola en la ruleta 2D.",
+            "Si la bola cae en una de tus casillas apostadas, recibirás las ganancias correspondientes automáticamente."
+          ]}
+          tips="Las apuestas externas (Rojo/Negro, Par/Impar) ofrecen casi 50% de probabilidad de acierto con pago 1:1."
+        />
       </div>
     </div>
   );

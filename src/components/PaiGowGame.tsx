@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { usePaiGowEngine } from '../hooks/usePaiGowEngine';
 import { Card3D } from './Card3D';
 import { Sparkles, CheckCircle, ShieldAlert } from 'lucide-react';
+import { HowToPlayGuide } from './HowToPlayGuide';
 
 interface PaiGowGameProps {
   onBackToLobby: () => void;
@@ -190,6 +191,17 @@ export const PaiGowGame: React.FC<PaiGowGameProps> = ({ onBackToLobby }) => {
             </div>
           )}
         </div>
+
+        <HowToPlayGuide
+          title="Pai Gow Poker"
+          steps={[
+            "Ingresa tu apuesta y presiona Repartir 7 Cartas.",
+            "Separa tus 7 cartas en una Mano Alta (5 cartas) y una Mano Frontal (2 cartas).",
+            "REGLA OBLIGATORIA: La Mano Alta de 5 cartas DEBE ser de mayor categoría que la Mano Frontal de 2 cartas.",
+            "Para ganar, tus dos manos deben superar a las dos manos del crupier. Si ganas 1 y pierdes 1, hay un Empate (Push)."
+          ]}
+          tips="Usa el botón 'Ordenar por House Way' para que el juego acomode tus cartas con la estrategia óptima de la banca."
+        />
       </div>
     </div>
   );

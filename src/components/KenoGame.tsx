@@ -1,6 +1,7 @@
 import React from 'react';
 import { useKenoEngine, KENO_MULTIPLIERS } from '../hooks/useKenoEngine';
 import { Sparkles, Trash2, Dices } from 'lucide-react';
+import { HowToPlayGuide } from './HowToPlayGuide';
 
 interface KenoGameProps {
   onBackToLobby: () => void;
@@ -194,6 +195,17 @@ export const KenoGame: React.FC<KenoGameProps> = ({ onBackToLobby }) => {
             </div>
           )}
         </div>
+
+        <HowToPlayGuide
+          title="Keno Lotería"
+          steps={[
+            "Haz clic en el panel para elegir entre 1 y 10 números de la suerte (o presiona Pick Rápido).",
+            "Establece tu cantidad a apostar y presiona Jugar Sorteo.",
+            "El bombo extraerá 20 números ganadores al azar.",
+            "Cuantos más números aciertes, mayor será el multiplicador de tu premio según la tabla de recompensas."
+          ]}
+          tips="Jugar 5 o 6 números ofrece un equilibrio ideal entre probabilidad de acertar y grandes multiplicadores."
+        />
       </div>
     </div>
   );

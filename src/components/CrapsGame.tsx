@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useCrapsEngine } from '../hooks/useCrapsEngine';
 import { Dice3D } from './Dice3D';
+import { HowToPlayGuide } from './HowToPlayGuide';
 
 interface CrapsGameProps {
   onBackToLobby: () => void;
@@ -166,6 +167,17 @@ export const CrapsGame: React.FC<CrapsGameProps> = ({ onBackToLobby }) => {
             )}
           </div>
         </div>
+
+        <HowToPlayGuide
+          title="Dados (Craps)"
+          steps={[
+            "Selecciona el valor de tus fichas y coloca tu apuesta en Pass Line (Pase) o Don't Pass (No Pase).",
+            "Presiona Lanzar Dados para hacer el tiro inicial (Come Out Roll).",
+            "Si sale 7 u 11 en el tiro Come Out, ¡ganas inmediatamente en Pass Line! Si sale 2, 3 o 12 (Craps), pierdes.",
+            "Si sale cualquier otro número (4, 5, 6, 8, 9, 10), ese número se convierte en el Punto (POINT ON). Debe volver a salir dicho número antes que un 7 para ganar."
+          ]}
+          tips="Puedes hacer apuestas de Campo (Field) en cualquier tiro para intentar adivinar números rápidos."
+        />
       </div>
     </div>
   );

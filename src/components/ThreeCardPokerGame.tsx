@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useThreeCardPokerEngine } from '../hooks/useThreeCardPokerEngine';
 import { Card3D } from './Card3D';
+import { HowToPlayGuide } from './HowToPlayGuide';
 
 interface ThreeCardPokerGameProps {
   onBackToLobby: () => void;
@@ -150,6 +151,17 @@ export const ThreeCardPokerGame: React.FC<ThreeCardPokerGameProps> = ({ onBackTo
             </div>
           )}
         </div>
+
+        <HowToPlayGuide
+          title="Three Card Poker"
+          steps={[
+            "Coloca tu apuesta Ante (y opcionalmente Pair Plus) y presiona Repartir.",
+            "Recibirás 3 cartas. Revisa tu mano e iguala la apuesta Ante con la opción Jugar (Play) o Retírate (Fold).",
+            "La mano del crupier debe clasificar con al menos Reina alta (Q) para calificar.",
+            "En Three Card Poker, las tercias pagan más que las escaleras y colores."
+          ]}
+          tips="La estrategia óptima en Three Card Poker es jugar siempre con mano Q-6-4 o superior."
+        />
       </div>
     </div>
   );
