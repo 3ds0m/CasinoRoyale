@@ -11,6 +11,8 @@ import { BaccaratGame } from './components/BaccaratGame';
 import { PaiGowGame } from './components/PaiGowGame';
 import { BlackjackGame } from './components/BlackjackGame';
 import { KenoGame } from './components/KenoGame';
+import { TexasHoldemGame } from './components/TexasHoldemGame';
+import { ProvablyFairAudit } from './components/ProvablyFairAudit';
 
 const PIP: Record<string, string> = {
   Cartas: '♦',
@@ -28,7 +30,7 @@ const GAMES = [
   { id: 'pai-gow' as GameType, title: 'Pai Gow Poker', cat: 'Cartas', desc: 'Divide siete cartas en dos manos y vence a la casa en ambas.', phase: 'next' as const, diff: 'Difícil', edge: '2.5%' },
   { id: 'blackjack' as GameType, title: 'Blackjack', cat: 'Cartas', desc: 'Pide, plántate, dobla o divide. Acércate a 21 sin pasarte.', phase: 'next' as const, diff: 'Medio', edge: '0.5%' },
   { id: 'keno-bingo' as GameType, title: 'Keno', cat: 'Lotería', desc: 'Elige tus números y espera el sorteo. Juego casual de velocidad.', phase: 'next' as const, diff: 'Fácil', edge: '4.5%' },
-  { id: 'texas-holdem' as GameType, title: "Texas Hold'em", cat: 'Estrategia', desc: 'Mesa completa contra tres bots con perfiles distintos de juego.', phase: 'later' as const, diff: 'Especialista', edge: '—' },
+  { id: 'texas-holdem' as GameType, title: "Texas Hold'em", cat: 'Estrategia', desc: 'Mesa completa contra tres bots con perfiles distintos de juego.', phase: 'next' as const, diff: 'Especialista', edge: '—' },
 ];
 
 const FEATURED = GAMES.slice(0, 2);
@@ -46,7 +48,7 @@ function App() {
   } = useGameSession();
 
   const [tab, setTab] = useState<'lobby' | 'history' | 'fairplay'>('lobby');
-  const [activeGameView, setActiveGameView] = useState<'lobby' | 'war' | 'three-card-poker' | 'roulette' | 'craps' | 'baccarat' | 'pai-gow' | 'blackjack' | 'keno-bingo'>('lobby');
+  const [activeGameView, setActiveGameView] = useState<'lobby' | 'war' | 'three-card-poker' | 'roulette' | 'craps' | 'baccarat' | 'pai-gow' | 'blackjack' | 'keno-bingo' | 'texas-holdem'>('lobby');
   const [nameInput, setNameInput] = useState('');
   const [editingName, setEditingName] = useState(false);
   const [storeOpen, setStoreOpen] = useState(false);
@@ -213,6 +215,7 @@ function App() {
               if (activeGame.gameType === 'pai-gow') setActiveGameView('pai-gow');
               if (activeGame.gameType === 'blackjack') setActiveGameView('blackjack');
               if (activeGame.gameType === 'keno-bingo') setActiveGameView('keno-bingo');
+              if (activeGame.gameType === 'texas-holdem') setActiveGameView('texas-holdem');
             }}>
               Reanudar
             </button>
@@ -252,6 +255,10 @@ function App() {
 
             {activeGameView === 'keno-bingo' && (
               <KenoGame onBackToLobby={() => setActiveGameView('lobby')} />
+            )}
+
+            {activeGameView === 'texas-holdem' && (
+              <TexasHoldemGame onBackToLobby={() => setActiveGameView('lobby')} />
             )}
 
             {activeGameView === 'lobby' && (
@@ -302,9 +309,42 @@ function App() {
         {tab === 'history' && (
           <div className="tab-content" key="history">
             <div className="page-header">
-              <h1 className="page-title">Historial</h1>
-              <p className="page-subtitle">Las últimas 50 rondas jugadas en esta sesión.</p>
+              <h1 className="page-title">Historial y Estadísticas</h1>
+              <p className="page-subtitle">Rendimiento acumulado y detalle de las últimas partidas jugadas.</p>
             </div>
+
+            {/* Panel de Métricas Estadísticas */}
+            {history.length > 0 && (() => {
+              const totalBet = history.reduce((acc, h) => acc + h.bet, 0);
+              const totalWin = history.reduce((acc, h) => acc + h.payout, 0);
+              const netProfit = totalWin - totalBet;
+              const winCount = history.filter(h => h.payout > 0).length;
+              const winrate = ((winCount / history.length) * 100).toFixed(1);
+
+              return (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 }}>
+                  <div style={{ background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(255,255,255,0.1)', padding: 16, borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--ink-muted)' }}>Total Apostado</div>
+                    <div style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 4, color: 'var(--ivory)' }}>{totalBet.toLocaleString()}</div>
+                  </div>
+                  <div style={{ background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(255,255,255,0.1)', padding: 16, borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--ink-muted)' }}>Total Ganancias</div>
+                    <div style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 4, color: 'var(--camel-light)' }}>{totalWin.toLocaleString()}</div>
+                  </div>
+                  <div style={{ background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(255,255,255,0.1)', padding: 16, borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--ink-muted)' }}>Balance Neto</div>
+                    <div style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 4, color: netProfit >= 0 ? '#4ade80' : '#f87171' }}>
+                      {netProfit >= 0 ? `+${netProfit.toLocaleString()}` : netProfit.toLocaleString()}
+                    </div>
+                  </div>
+                  <div style={{ background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(255,255,255,0.1)', padding: 16, borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--ink-muted)' }}>Tasa de Victoria (Winrate)</div>
+                    <div style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 4, color: 'var(--ivory)' }}>{winrate}%</div>
+                  </div>
+                </div>
+              );
+            })()}
+
             <div className="history-panel">
               {history.length === 0 ? (
                 <div className="empty-state">
@@ -337,33 +377,10 @@ function App() {
         {tab === 'fairplay' && (
           <div className="tab-content" key="fairplay">
             <div className="page-header">
-              <h1 className="page-title">Juego verificable</h1>
-              <p className="page-subtitle">Cada resultado se genera con criptografía SHA-256. Puedes auditarlo después de cada ronda.</p>
+              <h1 className="page-title">Juego Verificable (Provably Fair)</h1>
+              <p className="page-subtitle">Auditoría criptográfica independiente con algoritmo SHA-256 para demostrar la transparencia de cada mano.</p>
             </div>
-            <div className="fairplay-panel">
-              <div className="fairplay-grid">
-                <div className="fairplay-card">
-                  <h4>Cómo funciona</h4>
-                  <ol>
-                    <li>El servidor genera un <strong>Server Seed</strong> y te entrega su hash SHA-256 antes de la ronda.</li>
-                    <li>Tu navegador usa un <strong>Client Seed</strong> aleatorio que tú controlas.</li>
-                    <li>Ambos seeds y un <strong>nonce</strong> secuencial se combinan para derivar el resultado.</li>
-                    <li>Al terminar, el Server Seed se revela para que verifiques el hash.</li>
-                  </ol>
-                </div>
-                <div className="fairplay-card">
-                  <h4>Tus semillas actuales</h4>
-                  <div className="seed-field">
-                    <label>Client seed (tu navegador)</label>
-                    <input type="text" readOnly value="client-seed-royale-default-777" />
-                  </div>
-                  <div className="seed-field">
-                    <label>Próximo server hash</label>
-                    <input type="text" readOnly value="4a2b6e8a8c9e7f6d5c4b3a2f1e0d9c8b7a6f5e4d3c2b1a0f" />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <ProvablyFairAudit />
           </div>
         )}
       </div>
@@ -412,6 +429,7 @@ function App() {
                   if (detail.id === 'pai-gow') setActiveGameView('pai-gow');
                   if (detail.id === 'blackjack') setActiveGameView('blackjack');
                   if (detail.id === 'keno-bingo') setActiveGameView('keno-bingo');
+                  if (detail.id === 'texas-holdem') setActiveGameView('texas-holdem');
                   setDetail(null);
                 }} 
                 style={{ width: '100%', marginTop: 16 }}
