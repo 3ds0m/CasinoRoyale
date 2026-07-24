@@ -7,6 +7,10 @@ import { CasinoWarGame } from './components/CasinoWarGame';
 import { ThreeCardPokerGame } from './components/ThreeCardPokerGame';
 import { RouletteGame } from './components/RouletteGame';
 import { CrapsGame } from './components/CrapsGame';
+import { BaccaratGame } from './components/BaccaratGame';
+import { PaiGowGame } from './components/PaiGowGame';
+import { BlackjackGame } from './components/BlackjackGame';
+import { KenoGame } from './components/KenoGame';
 
 const PIP: Record<string, string> = {
   Cartas: '♦',
@@ -20,10 +24,10 @@ const GAMES = [
   { id: 'three-card-poker' as GameType, title: 'Three Card Poker', cat: 'Cartas', desc: 'Supera a la banca con tres naipes. Estrategia de Ante y Play.', phase: 'next' as const, diff: 'Medio', edge: '3.4%' },
   { id: 'roulette' as GameType, title: 'Ruleta Europea', cat: 'Mesa', desc: 'Rojo, negro o tu número. El giro clásico con un solo cero.', phase: 'next' as const, diff: 'Fácil', edge: '2.7%' },
   { id: 'craps' as GameType, title: 'Dados', cat: 'Mesa', desc: 'Lanza los dados y navega las fases de juego. Múltiples apuestas tácticas.', phase: 'next' as const, diff: 'Difícil', edge: '1.4%' },
-  { id: 'baccarat' as GameType, title: 'Baccarat', cat: 'Cartas', desc: 'Punto, banca o empate. El juego de los grandes apostadores.', phase: 'later' as const, diff: 'Fácil', edge: '1.06%' },
-  { id: 'pai-gow' as GameType, title: 'Pai Gow Poker', cat: 'Cartas', desc: 'Divide siete cartas en dos manos y vence a la casa en ambas.', phase: 'later' as const, diff: 'Difícil', edge: '2.5%' },
-  { id: 'blackjack' as GameType, title: 'Blackjack', cat: 'Cartas', desc: 'Pide, plántate, dobla o divide. Acércate a 21 sin pasarte.', phase: 'later' as const, diff: 'Medio', edge: '0.5%' },
-  { id: 'keno-bingo' as GameType, title: 'Keno', cat: 'Lotería', desc: 'Elige tus números y espera el sorteo. Juego casual de velocidad.', phase: 'later' as const, diff: 'Fácil', edge: '4.5%' },
+  { id: 'baccarat' as GameType, title: 'Baccarat', cat: 'Cartas', desc: 'Punto, banca o empate. El juego de los grandes apostadores.', phase: 'next' as const, diff: 'Fácil', edge: '1.06%' },
+  { id: 'pai-gow' as GameType, title: 'Pai Gow Poker', cat: 'Cartas', desc: 'Divide siete cartas en dos manos y vence a la casa en ambas.', phase: 'next' as const, diff: 'Difícil', edge: '2.5%' },
+  { id: 'blackjack' as GameType, title: 'Blackjack', cat: 'Cartas', desc: 'Pide, plántate, dobla o divide. Acércate a 21 sin pasarte.', phase: 'next' as const, diff: 'Medio', edge: '0.5%' },
+  { id: 'keno-bingo' as GameType, title: 'Keno', cat: 'Lotería', desc: 'Elige tus números y espera el sorteo. Juego casual de velocidad.', phase: 'next' as const, diff: 'Fácil', edge: '4.5%' },
   { id: 'texas-holdem' as GameType, title: "Texas Hold'em", cat: 'Estrategia', desc: 'Mesa completa contra tres bots con perfiles distintos de juego.', phase: 'later' as const, diff: 'Especialista', edge: '—' },
 ];
 
@@ -42,7 +46,7 @@ function App() {
   } = useGameSession();
 
   const [tab, setTab] = useState<'lobby' | 'history' | 'fairplay'>('lobby');
-  const [activeGameView, setActiveGameView] = useState<'lobby' | 'war' | 'three-card-poker' | 'roulette' | 'craps'>('lobby');
+  const [activeGameView, setActiveGameView] = useState<'lobby' | 'war' | 'three-card-poker' | 'roulette' | 'craps' | 'baccarat' | 'pai-gow' | 'blackjack' | 'keno-bingo'>('lobby');
   const [nameInput, setNameInput] = useState('');
   const [editingName, setEditingName] = useState(false);
   const [storeOpen, setStoreOpen] = useState(false);
@@ -205,6 +209,10 @@ function App() {
               if (activeGame.gameType === 'three-card-poker') setActiveGameView('three-card-poker');
               if (activeGame.gameType === 'roulette') setActiveGameView('roulette');
               if (activeGame.gameType === 'craps') setActiveGameView('craps');
+              if (activeGame.gameType === 'baccarat') setActiveGameView('baccarat');
+              if (activeGame.gameType === 'pai-gow') setActiveGameView('pai-gow');
+              if (activeGame.gameType === 'blackjack') setActiveGameView('blackjack');
+              if (activeGame.gameType === 'keno-bingo') setActiveGameView('keno-bingo');
             }}>
               Reanudar
             </button>
@@ -228,6 +236,22 @@ function App() {
 
             {activeGameView === 'craps' && (
               <CrapsGame onBackToLobby={() => setActiveGameView('lobby')} />
+            )}
+
+            {activeGameView === 'baccarat' && (
+              <BaccaratGame onBackToLobby={() => setActiveGameView('lobby')} />
+            )}
+
+            {activeGameView === 'pai-gow' && (
+              <PaiGowGame onBackToLobby={() => setActiveGameView('lobby')} />
+            )}
+
+            {activeGameView === 'blackjack' && (
+              <BlackjackGame onBackToLobby={() => setActiveGameView('lobby')} />
+            )}
+
+            {activeGameView === 'keno-bingo' && (
+              <KenoGame onBackToLobby={() => setActiveGameView('lobby')} />
             )}
 
             {activeGameView === 'lobby' && (
@@ -384,6 +408,10 @@ function App() {
                   if (detail.id === 'three-card-poker') setActiveGameView('three-card-poker');
                   if (detail.id === 'roulette') setActiveGameView('roulette');
                   if (detail.id === 'craps') setActiveGameView('craps');
+                  if (detail.id === 'baccarat') setActiveGameView('baccarat');
+                  if (detail.id === 'pai-gow') setActiveGameView('pai-gow');
+                  if (detail.id === 'blackjack') setActiveGameView('blackjack');
+                  if (detail.id === 'keno-bingo') setActiveGameView('keno-bingo');
                   setDetail(null);
                 }} 
                 style={{ width: '100%', marginTop: 16 }}
