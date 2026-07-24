@@ -309,22 +309,22 @@ function App() {
               const winrate = ((winCount / history.length) * 100).toFixed(1);
 
               return (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 }}>
-                  <div style={{ background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(255,255,255,0.1)', padding: 16, borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
+                <div className="history-stats-grid">
+                  <div className="history-stats-card">
                     <div style={{ fontSize: '0.8rem', color: 'var(--ink-muted)' }}>Total Apostado</div>
                     <div style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 4, color: 'var(--ivory)' }}>{totalBet.toLocaleString()}</div>
                   </div>
-                  <div style={{ background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(255,255,255,0.1)', padding: 16, borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
+                  <div className="history-stats-card">
                     <div style={{ fontSize: '0.8rem', color: 'var(--ink-muted)' }}>Total Ganancias</div>
                     <div style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 4, color: 'var(--camel-light)' }}>{totalWin.toLocaleString()}</div>
                   </div>
-                  <div style={{ background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(255,255,255,0.1)', padding: 16, borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
+                  <div className="history-stats-card">
                     <div style={{ fontSize: '0.8rem', color: 'var(--ink-muted)' }}>Balance Neto</div>
                     <div style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 4, color: netProfit >= 0 ? '#4ade80' : '#f87171' }}>
                       {netProfit >= 0 ? `+${netProfit.toLocaleString()}` : netProfit.toLocaleString()}
                     </div>
                   </div>
-                  <div style={{ background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(255,255,255,0.1)', padding: 16, borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
+                  <div className="history-stats-card">
                     <div style={{ fontSize: '0.8rem', color: 'var(--ink-muted)' }}>Tasa de Victoria (Winrate)</div>
                     <div style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 4, color: 'var(--ivory)' }}>{winrate}%</div>
                   </div>
@@ -340,21 +340,23 @@ function App() {
                   <p className="hint">Juega una ronda y aquí aparecerán los detalles.</p>
                 </div>
               ) : (
-                <table className="history-table">
-                  <thead><tr><th>Partida</th><th>Juego</th><th>Apuesta</th><th>Ganancia</th><th>Resultado</th><th>Hora</th></tr></thead>
-                  <tbody>
-                    {history.map((h, i) => (
-                      <tr key={i}>
-                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem' }}>{h.gameId.substring(0, 8)}</td>
-                        <td>{GAMES.find(g => g.id === h.gameType)?.title || h.gameType}</td>
-                        <td>{h.bet}</td>
-                        <td>{h.payout > 0 ? `+${h.payout}` : '0'}</td>
-                        <td><span className={`result-badge ${h.payout > 0 ? 'win' : 'loss'}`}>{h.payout > 0 ? 'Ganada' : 'Perdida'}</span></td>
-                        <td>{new Date(h.timestamp).toLocaleTimeString()}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <div className="history-table-wrapper">
+                  <table className="history-table">
+                    <thead><tr><th>Partida</th><th>Juego</th><th>Apuesta</th><th>Ganancia</th><th>Resultado</th><th>Hora</th></tr></thead>
+                    <tbody>
+                      {history.map((h, i) => (
+                        <tr key={i}>
+                          <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem' }}>{h.gameId.substring(0, 8)}</td>
+                          <td>{GAMES.find(g => g.id === h.gameType)?.title || h.gameType}</td>
+                          <td>{h.bet}</td>
+                          <td>{h.payout > 0 ? `+${h.payout}` : '0'}</td>
+                          <td><span className={`result-badge ${h.payout > 0 ? 'win' : 'loss'}`}>{h.payout > 0 ? 'Ganada' : 'Perdida'}</span></td>
+                          <td>{new Date(h.timestamp).toLocaleTimeString()}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </div>
           </div>

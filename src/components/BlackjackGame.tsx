@@ -123,7 +123,8 @@ export const BlackjackGame: React.FC<BlackjackGameProps> = ({ onBackToLobby }) =
                   border: isActive ? '2px solid #3b82f6' : '1px solid rgba(255,255,255,0.15)',
                   padding: 16,
                   borderRadius: 'var(--radius-md)',
-                  minWidth: 260,
+                  width: '100%',
+                  maxWidth: 320,
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>

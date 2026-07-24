@@ -52,7 +52,7 @@ export const TexasHoldemGame: React.FC<TexasHoldemGameProps> = ({ onBackToLobby 
       </div>
 
       {/* Tapete de Juego Ovalado */}
-      <div className="game-table" style={{ borderRadius: '120px', padding: '40px 20px', minHeight: 620 }}>
+      <div className="game-table" style={{ borderRadius: 'var(--radius-xl)', padding: '24px 16px', minHeight: 'auto' }}>
         <div className="game-table-felt-overlay" />
 
         {/* Message board */}
@@ -69,7 +69,7 @@ export const TexasHoldemGame: React.FC<TexasHoldemGameProps> = ({ onBackToLobby 
 
         {/* Bot Seats Row (Top) */}
         {players.length > 0 && (
-          <div style={{ display: 'flex', justifyContent: 'space-around', margin: '20px 0 30px 0' }}>
+          <div className="holdem-bots-container">
             {players.filter(p => !p.isHuman).map((bot) => {
               const isActive = activePlayerIndex === bot.id && stage !== 'finished' && stage !== 'showdown';
               const botEval = showdownEvals[bot.id];
@@ -77,15 +77,8 @@ export const TexasHoldemGame: React.FC<TexasHoldemGameProps> = ({ onBackToLobby 
               return (
                 <div 
                   key={bot.id}
-                  style={{
-                    background: isActive ? 'rgba(240,200,80,0.2)' : 'rgba(0,0,0,0.3)',
-                    border: isActive ? '2px solid var(--camel)' : '1px solid rgba(255,255,255,0.15)',
-                    padding: 12,
-                    borderRadius: 'var(--radius-md)',
-                    textAlign: 'center',
-                    minWidth: 160,
-                    opacity: bot.isFolded ? 0.4 : 1,
-                  }}
+                  className={`holdem-bot-seat ${isActive ? 'is-active' : ''}`}
+                  style={{ opacity: bot.isFolded ? 0.4 : 1 }}
                 >
                   <div style={{ fontWeight: 700, fontSize: '0.85rem', color: 'var(--ivory)', marginBottom: 4 }}>
                     {bot.name} {bot.isFolded && '(Retirado)'}
@@ -95,13 +88,13 @@ export const TexasHoldemGame: React.FC<TexasHoldemGameProps> = ({ onBackToLobby 
                   </div>
 
                   {/* Cards */}
-                  <div className="game-cards-container" style={{ justifyContent: 'center', gap: 6, minHeight: 80 }}>
+                  <div className="game-cards-container" style={{ justifyContent: 'center', gap: 4 }}>
                     {bot.holeCards.map((card, i) => (
                       <Card3D 
                         key={i} 
                         card={card} 
                         flipped={stage === 'showdown' || stage === 'finished'} 
-                        scale={0.7} 
+                        scale={0.65} 
                       />
                     ))}
                   </div>
@@ -119,16 +112,16 @@ export const TexasHoldemGame: React.FC<TexasHoldemGameProps> = ({ onBackToLobby 
         )}
 
         {/* Community Cards Area (Center) */}
-        <div style={{ background: 'rgba(0,0,0,0.25)', border: '1px dashed rgba(255,255,255,0.2)', padding: 16, borderRadius: 'var(--radius-md)', margin: '0 auto', maxWidth: 600, textAlign: 'center' }}>
+        <div className="holdem-community-container">
           <span style={{ fontSize: '0.8rem', color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
             Cartas Comunitarias ({stage.toUpperCase()})
           </span>
-          <div className="game-cards-container" style={{ justifyContent: 'center', gap: 10, marginTop: 10, minHeight: 110 }}>
+          <div className="game-cards-container" style={{ justifyContent: 'center', gap: 6, marginTop: 10 }}>
             {communityCards.length === 0 ? (
-              <div style={{ padding: 20, color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem' }}>Esperando el Flop...</div>
+              <div style={{ padding: 16, color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem' }}>Esperando el Flop...</div>
             ) : (
               communityCards.map((card, i) => (
-                <Card3D key={i} card={card} flipped={true} scale={0.9} />
+                <Card3D key={i} card={card} flipped={true} scale={0.8} />
               ))
             )}
           </div>
@@ -136,17 +129,10 @@ export const TexasHoldemGame: React.FC<TexasHoldemGameProps> = ({ onBackToLobby 
 
         {/* Human Player Seat (Bottom) */}
         {humanPlayer && (
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
+          <div className="holdem-human-seat">
             <div 
-              style={{
-                background: activePlayerIndex === 0 && stage !== 'finished' ? 'rgba(40,100,220,0.3)' : 'rgba(0,0,0,0.35)',
-                border: activePlayerIndex === 0 && stage !== 'finished' ? '2px solid #3b82f6' : '1px solid rgba(255,255,255,0.2)',
-                padding: 16,
-                borderRadius: 'var(--radius-md)',
-                minWidth: 320,
-                textAlign: 'center',
-                opacity: humanPlayer.isFolded ? 0.4 : 1,
-              }}
+              className={`holdem-human-card-box ${activePlayerIndex === 0 && stage !== 'finished' ? 'is-active' : ''}`}
+              style={{ opacity: humanPlayer.isFolded ? 0.4 : 1 }}
             >
               <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#60a5fa', marginBottom: 4 }}>
                 {humanPlayer.name} (TÚ) {humanPlayer.isFolded && '- RETIRADO'}
@@ -156,9 +142,9 @@ export const TexasHoldemGame: React.FC<TexasHoldemGameProps> = ({ onBackToLobby 
               </div>
 
               {/* Hole Cards */}
-              <div className="game-cards-container" style={{ justifyContent: 'center', gap: 12, minHeight: 100 }}>
+              <div className="game-cards-container" style={{ justifyContent: 'center', gap: 8 }}>
                 {humanPlayer.holeCards.map((card, i) => (
-                  <Card3D key={i} card={card} flipped={true} scale={0.95} />
+                  <Card3D key={i} card={card} flipped={true} scale={0.85} />
                 ))}
               </div>
 

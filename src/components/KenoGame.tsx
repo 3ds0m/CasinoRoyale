@@ -58,10 +58,10 @@ export const KenoGame: React.FC<KenoGameProps> = ({ onBackToLobby }) => {
         </div>
 
         {/* Layout with 80 Grid and Multipliers Sidebar */}
-        <div style={{ display: 'grid', gridTemplateColumns: '3fr 1fr', gap: 24, margin: '20px 0' }}>
+        <div className="keno-layout-grid">
           {/* 80-Cell Grid */}
-          <div style={{ background: 'rgba(0,0,0,0.25)', padding: 16, borderRadius: 'var(--radius-md)' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: 8 }}>
+          <div style={{ background: 'rgba(0,0,0,0.25)', padding: 12, borderRadius: 'var(--radius-md)' }}>
+            <div className="keno-board-grid">
               {Array.from({ length: 80 }, (_, i) => i + 1).map((num) => {
                 const isSelected = selectedNumbers.includes(num);
                 const isDrawn = drawnNumbers.includes(num);
@@ -89,17 +89,16 @@ export const KenoGame: React.FC<KenoGameProps> = ({ onBackToLobby }) => {
                   <div
                     key={num}
                     onClick={() => toggleNumber(num)}
+                    className="keno-cell"
                     style={{
                       background: bg,
                       border,
                       color,
-                      height: 48,
                       borderRadius: 'var(--radius-sm)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       fontWeight: 700,
-                      fontSize: '1rem',
                       cursor: stage === 'selecting' ? 'pointer' : 'default',
                       userSelect: 'none',
                       transition: 'all 0.15s ease',

@@ -74,7 +74,7 @@ export const PaiGowGame: React.FC<PaiGowGameProps> = ({ onBackToLobby }) => {
         <div className="game-hand-section" style={{ background: 'rgba(0,0,0,0.2)', padding: 16, borderRadius: 'var(--radius-md)', margin: '16px 0' }}>
           <span className="game-hand-title" style={{ fontSize: '0.9rem' }}>BANCA (CRUPIER)</span>
           
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 16, marginTop: 12 }}>
+          <div className="paigow-split-grid">
             {/* Dealer Low 2 */}
             <div>
               <div style={{ fontSize: '0.75rem', color: 'var(--ink-muted)', marginBottom: 6 }}>
@@ -114,7 +114,7 @@ export const PaiGowGame: React.FC<PaiGowGameProps> = ({ onBackToLobby }) => {
               )}
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 16 }}>
+            <div className="paigow-split-grid">
               {/* Player Low 2 */}
               <div style={{ border: '1px dashed var(--camel)', padding: 12, borderRadius: 'var(--radius-sm)' }}>
                 <div style={{ fontSize: '0.8rem', color: 'var(--camel-light)', fontWeight: 700, marginBottom: 8, textAlign: 'center' }}>

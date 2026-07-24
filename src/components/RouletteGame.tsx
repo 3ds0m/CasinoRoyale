@@ -221,6 +221,7 @@ export const RouletteGame: React.FC<RouletteGameProps> = ({ onBackToLobby }) => 
             ref={canvasRef}
             width={280}
             height={280}
+            className="roulette-canvas"
             style={{ background: 'transparent', borderRadius: '50%' }}
           />
 

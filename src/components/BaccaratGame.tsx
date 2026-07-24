@@ -60,7 +60,7 @@ export const BaccaratGame: React.FC<BaccaratGameProps> = ({ onBackToLobby }) => 
         </div>
 
         {/* Hands Container */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, margin: '20px 0' }}>
+        <div className="baccarat-hands-grid">
           {/* Player Hand */}
           <div className="game-hand-section" style={{ background: 'rgba(0,0,0,0.2)', padding: 16, borderRadius: 'var(--radius-md)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
@@ -108,7 +108,7 @@ export const BaccaratGame: React.FC<BaccaratGameProps> = ({ onBackToLobby }) => 
         {stage === 'betting' && (
           <div style={{ marginTop: 24 }}>
             {/* Chip selector */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginBottom: 20 }}>
+            <div className="chips-selector-row" style={{ justifyContent: 'center', marginBottom: 20 }}>
               {[10, 50, 100, 500].map((val) => (
                 <button
                   key={val}
@@ -123,7 +123,7 @@ export const BaccaratGame: React.FC<BaccaratGameProps> = ({ onBackToLobby }) => 
             </div>
 
             {/* Betting spots */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, maxWidth: 800, margin: '0 auto' }}>
+            <div className="baccarat-spots-grid">
               {/* Player Pair */}
               <div 
                 onClick={() => placeBet('playerPair')}

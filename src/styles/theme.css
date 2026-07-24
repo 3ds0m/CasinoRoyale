@@ -1011,27 +1011,301 @@ a { color: var(--felt); text-decoration: none; }
   box-shadow: 0 0 10px rgba(196, 162, 101, 0.4);
 }
 
-/* ── Responsive ── */
-@media (max-width: 900px) {
-  .topnav { padding: 0 var(--sp-5); }
-  .topnav-tab { padding: 0 var(--sp-4); font-size: 0.8rem; }
-  .page-container { padding: var(--sp-8) var(--sp-5) var(--sp-12); }
-  .featured-row { grid-template-columns: 1fr; }
+/* ── History Metrics & Table Responsiveness ── */
+.history-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-6);
+}
+
+.history-stats-card {
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: var(--sp-4);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.history-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Game Table Layout & Cards ── */
+.holdem-bots-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-3);
+  margin: var(--sp-5) 0 var(--sp-6) 0;
+}
+
+.holdem-bot-seat {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: var(--sp-3);
+  border-radius: var(--radius-md);
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.holdem-bot-seat.is-active {
+  background: rgba(240,200,80,0.2);
+  border: 2px solid var(--camel);
+}
+
+.holdem-community-container {
+  background: rgba(0,0,0,0.25);
+  border: 1px dashed rgba(255,255,255,0.2);
+  padding: var(--sp-4);
+  border-radius: var(--radius-md);
+  margin: 0 auto;
+  max-width: 600px;
+  text-align: center;
+}
+
+.holdem-human-seat {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--sp-6);
+}
+
+.holdem-human-card-box {
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: var(--sp-4);
+  border-radius: var(--radius-md);
+  min-width: 320px;
+  max-width: 100%;
+  text-align: center;
+}
+
+.holdem-human-card-box.is-active {
+  background: rgba(40,100,220,0.3);
+  border: 2px solid #3b82f6;
+}
+
+.blackjack-hand-grid {
+  display: flex;
+  gap: var(--sp-4);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: var(--sp-6);
+}
+
+.blackjack-action-bar {
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  margin-top: var(--sp-6);
+}
+
+.roulette-game-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-6);
+}
+
+.roulette-wheel-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.roulette-canvas {
+  max-width: 320px;
+  width: 100%;
+  height: auto;
+}
+
+/* ── Responsive Breakpoints ── */
+@media (max-width: 1024px) {
+  .page-container { padding: var(--sp-6) var(--sp-4) var(--sp-12); }
+  .history-stats-grid { grid-template-columns: repeat(2, 1fr); }
   .games-grid { grid-template-columns: repeat(2, 1fr); }
-  .hero { padding: var(--sp-10) var(--sp-8); min-height: auto; }
-  .hero-inner { flex-direction: column; }
+}
+
+@media (max-width: 768px) {
+  .topnav {
+    height: auto;
+    min-height: 64px;
+    padding: var(--sp-3) var(--sp-4);
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+  }
+  .topnav-logo { font-size: 1.3rem; }
+  .topnav-tabs {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: var(--sp-1);
+    justify-content: flex-start;
+  }
+  .topnav-tab {
+    padding: 6px var(--sp-3);
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+  .topnav-right {
+    gap: var(--sp-2);
+  }
+  .topnav-user-name { display: none; }
+  .balance-chip { font-size: 0.75rem; padding: 4px 10px; }
+  .btn { padding: 6px 12px; font-size: 0.78rem; }
+  
+  .hero { padding: var(--sp-8) var(--sp-5); min-height: auto; border-radius: var(--radius-lg); }
+  .hero-inner { flex-direction: column; text-align: center; }
+  .hero-content { max-width: 100%; }
   .hero-cards { display: none; }
+
+  .featured-row { grid-template-columns: 1fr; }
+  .games-grid { grid-template-columns: 1fr; }
+
+  .game-table {
+    padding: 20px 12px !important;
+    border-radius: 20px !important;
+    border-width: 2px !important;
+  }
+  .game-cards-container {
+    gap: var(--sp-2);
+    flex-wrap: wrap;
+    min-height: auto;
+  }
+
+  .holdem-bots-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+  .holdem-bot-seat {
+    padding: 8px 4px;
+    min-width: 0;
+  }
+  .holdem-bot-seat .game-cards-container {
+    gap: 2px;
+  }
+  .holdem-human-card-box {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .betting-area {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sp-4);
+  }
+
+  .chips-selector-row {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .inline-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
   .fairplay-grid { grid-template-columns: 1fr; }
+  .modal { width: 95vw; padding: var(--sp-5); }
+}
+
+@media (max-width: 480px) {
+  .history-stats-grid { grid-template-columns: 1fr; }
+  .holdem-bots-container {
+    grid-template-columns: 1fr;
+  }
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-3);
+  }
+  .section-header .btn {
+    align-self: stretch;
+    justify-content: center;
+  }
+  .active-game-notice {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  .active-game-notice .btn {
+    width: 100%;
+  }
+}
+
+/* ── Keno Responsive Layout ── */
+.keno-layout-grid {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: var(--sp-6);
+  margin: var(--sp-5) 0;
+}
+
+.keno-board-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 6px;
+}
+
+.keno-cell {
+  height: 44px;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .keno-layout-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 600px) {
-  .topnav-tabs { gap: 0; }
-  .topnav-tab { padding: 0 var(--sp-3); font-size: 0.78rem; }
-  .topnav-right { gap: var(--sp-3); }
-  .topnav-user-name { display: none; }
-  .games-grid { grid-template-columns: 1fr; }
-  .game-card .btn { opacity: 1; transform: none; }
-  .hero { padding: var(--sp-8) var(--sp-5); border-radius: var(--radius-lg); }
+  .keno-board-grid {
+    gap: 3px;
+  }
+  .keno-cell {
+    height: 36px;
+    font-size: 0.75rem;
+  }
+}
+
+/* ── Baccarat & Pai Gow Responsive Layouts ── */
+.baccarat-hands-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-6);
+  margin: var(--sp-5) 0;
+}
+
+.baccarat-spots-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-4);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.paigow-split-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--sp-4);
+  margin-top: var(--sp-3);
+}
+
+@media (max-width: 768px) {
+  .baccarat-hands-grid {
+    grid-template-columns: 1fr;
+  }
+  .baccarat-spots-grid {
+    grid-template-columns: 1fr;
+  }
+  .paigow-split-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ── Reduced Motion ── */
