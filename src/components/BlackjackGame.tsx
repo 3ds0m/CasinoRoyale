@@ -169,22 +169,29 @@ export const BlackjackGame: React.FC<BlackjackGameProps> = ({ onBackToLobby }) =
             </form>
           )}
 
-          {stage === 'player-turn' && hands.length > 0 && (
-            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-              <button className="btn btn-primary" onClick={hit} style={{ minWidth: 110, height: 44 }}>
-                Pedir (Hit)
-              </button>
-              <button className="btn btn-secondary" onClick={stand} style={{ minWidth: 110, height: 44 }}>
-                Plantarse (Stand)
-              </button>
-              <button className="btn btn-felt" onClick={doubleDown} disabled={hands[activeHandIndex]?.cards.length !== 2} style={{ height: 44 }}>
-                Doblar (Double)
-              </button>
-              <button className="btn btn-secondary" onClick={split} disabled={hands[activeHandIndex]?.cards.length !== 2} style={{ height: 44 }}>
-                Dividir (Split)
-              </button>
-            </div>
-          )}
+          {stage === 'player-turn' && hands.length > 0 && (() => {
+            const activeHand = hands[activeHandIndex];
+            const canDouble = activeHand?.cards.length === 2;
+            const canSplit = activeHand?.cards.length === 2 && 
+              calculateBlackjackHandValue([activeHand.cards[0]]).total === calculateBlackjackHandValue([activeHand.cards[1]]).total;
+
+            return (
+              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
+                <button className="btn btn-primary" onClick={hit} style={{ minWidth: 110, height: 44 }}>
+                  Pedir (Hit)
+                </button>
+                <button className="btn btn-secondary" onClick={stand} style={{ minWidth: 110, height: 44 }}>
+                  Plantarse (Stand)
+                </button>
+                <button className="btn btn-felt" onClick={doubleDown} disabled={!canDouble} style={{ height: 44 }}>
+                  Doblar (Double)
+                </button>
+                <button className="btn btn-secondary" onClick={split} disabled={!canSplit} style={{ height: 44 }}>
+                  Dividir (Split)
+                </button>
+              </div>
+            );
+          })()}
 
           {stage === 'finished' && (
             <div style={{ display: 'flex', gap: 16 }}>
