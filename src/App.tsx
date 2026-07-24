@@ -22,15 +22,15 @@ const PIP: Record<string, string> = {
 };
 
 const GAMES = [
-  { id: 'war' as GameType, title: 'Casino War', cat: 'Cartas', desc: 'El duelo de cartas más directo del casino. Jugador contra crupier, una carta cada uno.', phase: 'next' as const, diff: 'Fácil', edge: '2.8%' },
-  { id: 'three-card-poker' as GameType, title: 'Three Card Poker', cat: 'Cartas', desc: 'Supera a la banca con tres naipes. Estrategia de Ante y Play.', phase: 'next' as const, diff: 'Medio', edge: '3.4%' },
-  { id: 'roulette' as GameType, title: 'Ruleta Europea', cat: 'Mesa', desc: 'Rojo, negro o tu número. El giro clásico con un solo cero.', phase: 'next' as const, diff: 'Fácil', edge: '2.7%' },
-  { id: 'craps' as GameType, title: 'Dados', cat: 'Mesa', desc: 'Lanza los dados y navega las fases de juego. Múltiples apuestas tácticas.', phase: 'next' as const, diff: 'Difícil', edge: '1.4%' },
-  { id: 'baccarat' as GameType, title: 'Baccarat', cat: 'Cartas', desc: 'Punto, banca o empate. El juego de los grandes apostadores.', phase: 'next' as const, diff: 'Fácil', edge: '1.06%' },
-  { id: 'pai-gow' as GameType, title: 'Pai Gow Poker', cat: 'Cartas', desc: 'Divide siete cartas en dos manos y vence a la casa en ambas.', phase: 'next' as const, diff: 'Difícil', edge: '2.5%' },
-  { id: 'blackjack' as GameType, title: 'Blackjack', cat: 'Cartas', desc: 'Pide, plántate, dobla o divide. Acércate a 21 sin pasarte.', phase: 'next' as const, diff: 'Medio', edge: '0.5%' },
-  { id: 'keno-bingo' as GameType, title: 'Keno', cat: 'Lotería', desc: 'Elige tus números y espera el sorteo. Juego casual de velocidad.', phase: 'next' as const, diff: 'Fácil', edge: '4.5%' },
-  { id: 'texas-holdem' as GameType, title: "Texas Hold'em", cat: 'Estrategia', desc: 'Mesa completa contra tres bots con perfiles distintos de juego.', phase: 'next' as const, diff: 'Especialista', edge: '—' },
+  { id: 'war' as GameType, title: 'Casino War', cat: 'Cartas', desc: 'El duelo de cartas más directo del casino. Jugador contra crupier, una carta cada uno.', phase: 'ready' as const, diff: 'Fácil', edge: '2.8%' },
+  { id: 'three-card-poker' as GameType, title: 'Three Card Poker', cat: 'Cartas', desc: 'Supera a la banca con tres naipes. Estrategia de Ante y Play.', phase: 'ready' as const, diff: 'Medio', edge: '3.4%' },
+  { id: 'roulette' as GameType, title: 'Ruleta Europea', cat: 'Mesa', desc: 'Rojo, negro o tu número. El giro clásico con un solo cero.', phase: 'ready' as const, diff: 'Fácil', edge: '2.7%' },
+  { id: 'craps' as GameType, title: 'Dados', cat: 'Mesa', desc: 'Lanza los dados y navega las fases de juego. Múltiples apuestas tácticas.', phase: 'ready' as const, diff: 'Difícil', edge: '1.4%' },
+  { id: 'baccarat' as GameType, title: 'Baccarat', cat: 'Cartas', desc: 'Punto, banca o empate. El juego de los grandes apostadores.', phase: 'ready' as const, diff: 'Fácil', edge: '1.06%' },
+  { id: 'pai-gow' as GameType, title: 'Pai Gow Poker', cat: 'Cartas', desc: 'Divide siete cartas en dos manos y vence a la casa en ambas.', phase: 'ready' as const, diff: 'Difícil', edge: '2.5%' },
+  { id: 'blackjack' as GameType, title: 'Blackjack', cat: 'Cartas', desc: 'Pide, plántate, dobla o divide. Acércate a 21 sin pasarte.', phase: 'ready' as const, diff: 'Medio', edge: '0.5%' },
+  { id: 'keno-bingo' as GameType, title: 'Keno', cat: 'Lotería', desc: 'Elige tus números y espera el sorteo. Juego casual de velocidad.', phase: 'ready' as const, diff: 'Fácil', edge: '4.5%' },
+  { id: 'texas-holdem' as GameType, title: "Texas Hold'em", cat: 'Estrategia', desc: 'Mesa completa contra tres bots con perfiles distintos de juego.', phase: 'ready' as const, diff: 'Especialista', edge: '—' },
 ];
 
 const FEATURED = GAMES.slice(0, 2);
@@ -42,6 +42,7 @@ function App() {
     history, 
     activeGame, 
     updateUsername, 
+    updateBalance,
     loginWithEmail, 
     registerWithEmail, 
     logout 
@@ -76,28 +77,12 @@ function App() {
     }
 
     try {
-      const price = coinAmount === 500 ? 500 : coinAmount === 1200 ? 1000 : 2000;
-      
-      const response = await fetch('http://127.0.0.1:5001/mock-project-id/us-central1/createStripeCheckout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: user.uid,
-          packageId: `package_${coinAmount}`,
-          coinAmount,
-          price
-        })
-      });
-
-      const data = await response.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        throw new Error(data.error || "No se devolvió la URL de Checkout");
-      }
+      await updateBalance(coinAmount);
+      setStoreOpen(false);
+      alert(`Pagos con Stripe disponibles en un futuro. ¡Disfruta de ${coinAmount.toLocaleString()} fichas!`);
     } catch (err: any) {
-      console.error("Error creating Stripe session:", err);
-      alert("Pagos con Stripe disponibles en un futuro.");
+      console.error("Error adding chips:", err);
+      alert("No se pudo agregar las fichas. Inténtalo de nuevo.");
     }
   };
 
@@ -125,7 +110,9 @@ function App() {
       <span className="game-card-pip">{PIP[g.cat]}</span>
       <div className="game-card-header">
         <span className="game-card-category">{g.cat}</span>
-        {g.phase === 'next' && <span className="game-card-status">Próxima fase</span>}
+        <span className="game-card-status" style={{ background: 'rgba(50,200,100,0.15)', color: '#4ade80', borderColor: 'rgba(50,200,100,0.3)' }}>
+          Disponible
+        </span>
       </div>
       <h3 className="game-card-title">{g.title}</h3>
       <p className="game-card-desc">{g.desc}</p>
@@ -134,7 +121,7 @@ function App() {
           <span>{g.diff}</span>
           <span>Ventaja <strong>{g.edge}</strong></span>
         </div>
-        <button className="btn btn-secondary">Ver</button>
+        <button className="btn btn-secondary">Jugar</button>
       </div>
     </div>
   );
@@ -415,28 +402,26 @@ function App() {
              <div className="game-detail-meta">
               <div><span className="meta-label">Dificultad</span><span className="meta-value">{detail.diff}</span></div>
               <div><span className="meta-label">Ventaja de la casa</span><span className="meta-value">{detail.edge}</span></div>
-              <div style={{ gridColumn: 'span 2' }}><span className="meta-label">Estado</span><span className="meta-value">{detail.phase === 'next' ? 'Disponible para Jugar' : 'Planificado para fases posteriores'}</span></div>
+              <div style={{ gridColumn: 'span 2' }}><span className="meta-label">Estado</span><span className="meta-value">Disponible para Jugar</span></div>
             </div>
-            {detail.phase === 'next' && (
-              <button 
-                className="btn btn-primary" 
-                onClick={() => {
-                  if (detail.id === 'war') setActiveGameView('war');
-                  if (detail.id === 'three-card-poker') setActiveGameView('three-card-poker');
-                  if (detail.id === 'roulette') setActiveGameView('roulette');
-                  if (detail.id === 'craps') setActiveGameView('craps');
-                  if (detail.id === 'baccarat') setActiveGameView('baccarat');
-                  if (detail.id === 'pai-gow') setActiveGameView('pai-gow');
-                  if (detail.id === 'blackjack') setActiveGameView('blackjack');
-                  if (detail.id === 'keno-bingo') setActiveGameView('keno-bingo');
-                  if (detail.id === 'texas-holdem') setActiveGameView('texas-holdem');
-                  setDetail(null);
-                }} 
-                style={{ width: '100%', marginTop: 16 }}
-              >
-                Comenzar Juego
-              </button>
-            )}
+            <button 
+              className="btn btn-primary" 
+              onClick={() => {
+                if (detail.id === 'war') setActiveGameView('war');
+                if (detail.id === 'three-card-poker') setActiveGameView('three-card-poker');
+                if (detail.id === 'roulette') setActiveGameView('roulette');
+                if (detail.id === 'craps') setActiveGameView('craps');
+                if (detail.id === 'baccarat') setActiveGameView('baccarat');
+                if (detail.id === 'pai-gow') setActiveGameView('pai-gow');
+                if (detail.id === 'blackjack') setActiveGameView('blackjack');
+                if (detail.id === 'keno-bingo') setActiveGameView('keno-bingo');
+                if (detail.id === 'texas-holdem') setActiveGameView('texas-holdem');
+                setDetail(null);
+              }} 
+              style={{ width: '100%', marginTop: 16 }}
+            >
+              Comenzar Juego
+            </button>
             <button className="btn btn-secondary" onClick={() => setDetail(null)} style={{ width: '100%', marginTop: 12 }}>Cerrar</button>
           </div>
         </div>
